@@ -9,7 +9,17 @@ var readJsonFile = function() {
 
     try {
         //se convierte a JSON
-        dbConfig = JSON.parse(connectionParams);
+        // if OPENSHIFT env variables are present, use the available connection info:
+        if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
+            dbConfig = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+                process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
+                process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+                process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
+                process.env.OPENSHIFT_APP_NAME;
+        }else {
+            data = JSON.parse(connectionParams);
+            dbConfig = data.params.host + ':'+  data.params.port + '/' + data.params.database;
+        }
     } 
     catch (err) {
         console.log(err);

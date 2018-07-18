@@ -12,14 +12,16 @@ var express        = require('express'),
       ip           = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.0';
 //-------------------------------------------------------------------------
 
-app.use(bodyParser.urlencoded({ extended: false }));
+//definicion de carpeta para sitios web
+app.use(express.static(__dirname + '/htdocs'));
 
+
+app.use(bodyParser.urlencoded({'extended':'true'}));
 // parse application/json
 app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/vnd.api+json'}));
 
 
-//define ubición del directorio principal
-//app.use('/', express.static(__dirname + '/app'));
 
 app.use(function (req, res, next) {
   next();
@@ -28,6 +30,13 @@ app.use(function (req, res, next) {
 //End: Server configuration
 
 //Start: Routing
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "localhost:8080");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+  next();
+});
 
 /*
 Devuelve todos los eventos
@@ -187,6 +196,11 @@ Devuelve todos los usuarios
         }
   */
 app.get('/api/carrera/usuarios/todos', usuariosController.getUsuarios);
+
+//main web site
+app.get('/test', function(req, res) {
+  res.sendfile('htdocs/index.html', {root: __dirname })
+});
 
 
 // error handling
