@@ -5,10 +5,11 @@ var path = require('path'),
     usuariosController = require('./controllers/usuariosController.js');
 
 //-------------------------------------------------------------------------
-var express       = require('express'),
-      app              = express(),
-      server          = require('http').createServer(app),
-      port              = 9000;
+var express        = require('express'),
+      app          = express(),
+      server       = require('http').createServer(app),
+      port         = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT ||9000,
+      ip           = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.0';
 //-------------------------------------------------------------------------
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -188,6 +189,15 @@ Devuelve todos los usuarios
 app.get('/api/carrera/usuarios/todos', usuariosController.getUsuarios);
 
 
-server.listen(port, function(){
-  console.log('Server listening on port: ' + port);
+// error handling
+app.use(function(err, req, res, next){
+  console.error(err.stack);
+  res.status(500).send('Something bad happened!');
 });
+
+
+app.listen(port, ip);
+console.log('Server running on http://%s:%s', ip, port);
+
+
+module.exports = app ;
