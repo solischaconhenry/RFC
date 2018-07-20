@@ -9,7 +9,7 @@ var express        = require('express'),
       app          = express(),
       server       = require('http').createServer(app),
       port         = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT ||9000,
-      ip           = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.0';
+      ip           = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 //-------------------------------------------------------------------------
 
 //definicion de carpeta para sitios web

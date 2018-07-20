@@ -1,4 +1,8 @@
 {
+  "name": "RFC",
+  "version": "1.0.0",
+  "description": "Web service para RFC-SLACK",
+  "main": "server.js",
   "private": true,
   "engines": {
     "node": ">=0.10.0"
@@ -6,13 +10,16 @@
   "dependencies": {
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
-    "mongodb": "^2.1.14"
+    "mongodb": "^2.1.14",
+    "nodemon": "^1.18.3"
   },
   "engine": {
     "node": "*",
     "npm": "*"
   },
   "scripts": {
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prestart": "npm install",
+    "start": "nodemon server.js"
   }
 }
